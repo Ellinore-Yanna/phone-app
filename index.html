@@ -38,9 +38,9 @@
       <div class="app-icon-img ic-calc">🧮</div>
       <span class="app-icon-label">Calculator</span>
     </div>
-    <div class="app-icon" onclick="openApp('camera','Camera')">
-      <div class="app-icon-img ic-cam">📷</div>
-      <span class="app-icon-label">Camera</span>
+    <div class="app-icon" onclick="openApp('photos','Photos')">
+      <div class="app-icon-img ic-photos">🖼️</div>
+      <span class="app-icon-label">Photos</span>
     </div>
     <div class="app-icon disabled" id="phone-icon" onclick="if (phoneUnlocked) openApp('phone','Phone')">
       <div class="app-icon-img ic-phone">📞</div>
@@ -75,29 +75,15 @@
       <div class="calc-grid" id="calc-grid"></div>
     </section>
 
-    <!-- ══ CAMERA ══ -->
-    <section id="camera" class="screen">
-      <div class="cam-tabs">
-        <button class="cam-tab active" onclick="camMode('live')">📷 Camera</button>
-        <button class="cam-tab" onclick="camMode('gallery')" id="gallery-tab">🖼 Gallery (<span id="gallery-count">0</span>)</button>
-      </div>
-      <div id="cam-view">
-        <video id="cam-video" autoplay playsinline muted></video>
-        <canvas id="cam-canvas"></canvas>
-        <div class="cam-controls">
-          <button class="cam-icon-btn" onclick="pickFromLibrary()" title="Library">📂</button>
-          <button class="shutter" onclick="takePhoto()" title="Take photo"></button>
-          <button class="cam-icon-btn" onclick="flipCamera()" title="Flip">🔄</button>
-        </div>
-        <div id="cam-permission">
-          <p>Camera access is needed to take photos.</p>
-          <button class="btn-primary" onclick="startCamera()">Enable Camera</button>
-          <button class="btn-primary" style="background:var(--surface2);margin-top:8px" onclick="pickFromLibrary()">Open Photo Library</button>
-        </div>
+    <!-- ══ PHOTOS ══ -->
+    <section id="photos" class="screen">
+      <div class="photos-bar">
+        <span>Photos (<span id="gallery-count">0</span>)</span>
+        <button class="photos-add" onclick="pickFromLibrary()">+ Add</button>
       </div>
       <div id="gallery-view">
         <div class="gallery-grid" id="gallery-grid"></div>
-        <div class="gallery-empty" id="gallery-empty">No photos yet. Take one!</div>
+        <div class="gallery-empty" id="gallery-empty">No photos yet. Tap + Add to import some.</div>
       </div>
       <input type="file" id="file-input" accept="image/*" multiple style="display:none" onchange="libraryPicked(event)">
     </section>
@@ -161,10 +147,10 @@
     <button class="tab active" onclick="showTab('calc','Calculator',this)">
       <span class="icon">🧮</span><span class="label">Calc</span>
     </button>
-    <button class="tab" onclick="showTab('camera','Camera',this)">
-      <span class="icon">📷</span><span class="label">Camera</span>
+    <button class="tab" onclick="showTab('photos','Photos',this)">
+      <span class="icon">🖼️</span><span class="label">Photos</span>
     </button>
-    <button class="tab" onclick="showTab('phone','Phone',this)">
+    <button class="tab disabled" id="nav-phone" onclick="showTab('phone','Phone',this)">
       <span class="icon">📞</span><span class="label">Phone</span>
     </button>
     <button class="tab" onclick="showTab('notes','Notes',this)">

@@ -146,7 +146,7 @@ function openApp(id, title) {
   if (matchingTab) matchingTab.classList.add('active');
   document.getElementById('page-title').textContent = title;
 
-  if (id === 'camera') initCamera();
+  if (id === 'photos') initPhotos();
   if (id === 'clock') startClock();
 }
 
@@ -162,7 +162,7 @@ function showTab(id, title, btn) {
   btn.classList.add('active');
   document.getElementById('page-title').textContent = title;
 
-  if (id === 'camera') initCamera();
+  if (id === 'photos') initPhotos();
   if (id === 'clock') startClock();
 }
 
@@ -261,6 +261,7 @@ document.getElementById('app').style.display = 'none';
     if (match && !phoneUnlocked) {
       phoneUnlocked = true;
       document.getElementById('phone-icon').classList.remove('disabled');
+      document.getElementById('nav-phone').classList.remove('disabled');
       document.getElementById('unlock-popup').classList.add('open');
     }
   }
@@ -268,59 +269,16 @@ document.getElementById('app').style.display = 'none';
 })();
 
 /* ══════════════════════════════
-   CAMERA
+   PHOTOS
 ══════════════════════════════ */
-let stream = null, facingMode = 'environment', photos = [];
-const video = document.getElementById('cam-video');
-const canvas = document.getElementById('cam-canvas');
-const perm = document.getElementById('cam-permission');
+let photos = [];
 
-function initCamera() {
-  if (stream) return;
-  perm.style.display = 'flex';
-  video.style.display = 'none';
-  document.querySelector('.cam-controls').style.display = 'none';
-}
-
-async function startCamera() {
-  try {
-    if (stream) { stream.getTracks().forEach(t => t.stop()); }
-    stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode }, audio: false });
-    video.srcObject = stream;
-    perm.style.display = 'none';
-    video.style.display = 'block';
-    document.querySelector('.cam-controls').style.display = 'flex';
-  } catch(e) {
-    perm.querySelector('p').textContent = 'Camera unavailable: ' + e.message;
-  }
-}
-
-function flipCamera() {
-  facingMode = facingMode === 'environment' ? 'user' : 'environment';
-  startCamera();
-}
-
-function takePhoto() {
-  if (!stream) return;
-  canvas.width = video.videoWidth;
-  canvas.height = video.videoHeight;
-  canvas.getContext('2d').drawImage(video, 0, 0);
-  const uri = canvas.toDataURL('image/jpeg', 0.85);
-  addPhoto(uri);
-  flashEffect();
-}
+function initPhotos() { renderGallery(); }
 
 function addPhoto(uri) {
   photos.unshift(uri);
   document.getElementById('gallery-count').textContent = photos.length;
   renderGallery();
-}
-
-function flashEffect() {
-  const f = document.createElement('div');
-  f.style.cssText = 'position:absolute;inset:0;background:#fff;pointer-events:none;z-index:9';
-  document.getElementById('cam-view').appendChild(f);
-  setTimeout(() => f.remove(), 120);
 }
 
 function pickFromLibrary() {
@@ -348,23 +306,6 @@ function renderGallery() {
     img.onclick = () => openLightbox(uri);
     grid.appendChild(img);
   });
-}
-
-function camMode(mode) {
-  const liveView = document.getElementById('cam-view');
-  const gallView = document.getElementById('gallery-view');
-  document.querySelectorAll('.cam-tab').forEach(t => t.classList.remove('active'));
-  if (mode === 'live') {
-    liveView.style.display = 'block';
-    gallView.classList.remove('visible');
-    document.querySelectorAll('.cam-tab')[0].classList.add('active');
-    startCamera();
-  } else {
-    liveView.style.display = 'none';
-    gallView.classList.add('visible');
-    document.querySelectorAll('.cam-tab')[1].classList.add('active');
-    renderGallery();
-  }
 }
 
 function openLightbox(uri) {

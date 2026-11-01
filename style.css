@@ -124,6 +124,7 @@
   -webkit-tap-highlight-color: transparent;
 }
 .app-icon:active .app-icon-img { transform: scale(.9); }
+.tab.disabled { opacity: .35; filter: grayscale(1); pointer-events: none; }
 .app-icon.disabled { opacity: .35; filter: grayscale(1); pointer-events: none; }
 
 .app-icon-img {
@@ -141,7 +142,7 @@
 
 /* App icon colors */
 .ic-calc  { background: linear-gradient(145deg, #1c1c1e, #3a3a3c); }
-.ic-cam   { background: linear-gradient(145deg, #1c1c1e, #3a3a3c); }
+.ic-photos { background: linear-gradient(145deg, #1c1c1e, #3a3a3c); }
 .ic-phone { background: linear-gradient(145deg, #30d158, #25a244); }
 .ic-notes { background: linear-gradient(145deg, #ffd60a, #c8a800); }
 .ic-clock { background: linear-gradient(145deg, #1c1c1e, #3a3a3c); }
@@ -248,62 +249,24 @@ nav {
 }
 
 /* ════════════════════════
-   CAMERA
+   PHOTOS
 ════════════════════════ */
-#camera { background: #000; }
+#photos { background: #000; }
 
-.cam-tabs {
-  display: flex; background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  flex-shrink: 0;
+.photos-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px; background: var(--surface);
+  border-bottom: 1px solid var(--border); flex-shrink: 0;
+  font-size: 14px; color: var(--text);
 }
-.cam-tab {
-  flex: 1; padding: 12px; text-align: center;
-  cursor: pointer; font-size: 14px; color: var(--muted);
-  border: none; background: none;
-  -webkit-tap-highlight-color: transparent;
+.photos-add {
+  border: none; background: none; color: var(--blue);
+  font-size: 15px; cursor: pointer;
 }
-.cam-tab.active { color: var(--text); background: var(--surface2); }
-
-#cam-view { flex: 1; position: relative; overflow: hidden; min-height: 0; }
-
-#cam-view video {
-  width: 100%; height: 100%; object-fit: cover;
-}
-#cam-view canvas { display: none; }
-
-.cam-controls {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  display: flex; align-items: center; justify-content: space-around;
-  padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,.6));
-}
-.shutter {
-  width: 72px; height: 72px; border-radius: 50%;
-  background: #fff; border: 4px solid #ccc;
-  cursor: pointer; transition: transform .1s;
-  -webkit-tap-highlight-color: transparent;
-}
-.shutter:active { transform: scale(.92); }
-
-.cam-icon-btn {
-  width: 48px; height: 48px; border-radius: 50%;
-  background: rgba(255,255,255,.2); border: none;
-  font-size: 22px; cursor: pointer; color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  -webkit-tap-highlight-color: transparent;
-}
-
-#cam-permission {
-  flex: 1; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 16px; padding: 32px;
-  text-align: center;
-}
-#cam-permission p { color: var(--muted); font-size: 15px; }
 
 #gallery-view {
-  flex: 1; display: none; overflow-y: auto;
+  flex: 1; overflow-y: auto;
 }
-#gallery-view.visible { display: block; }
 
 .gallery-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
