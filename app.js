@@ -502,12 +502,9 @@ function fmtDuration(s) {
   return m > 0 ? `${m}m ${s % 60}s` : `${s}s`;
 }
 
-function makeCall() {
-  const num = document.getElementById('dial-number').textContent.trim();
-  if (!num || num === '8675309') return;
-  addCallRecord('outgoing', null, num, 0);
-  window.location.href = 'tel:' + num;
-}
+// Only the secret number (8675309) places a call, and it is handled in dialPress.
+// The call button never dials a real number.
+function makeCall() {}
 
 /* ══════════════════════════════
    NOTES
