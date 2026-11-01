@@ -124,6 +124,7 @@
   -webkit-tap-highlight-color: transparent;
 }
 .app-icon:active .app-icon-img { transform: scale(.9); }
+.app-icon.disabled { opacity: .35; filter: grayscale(1); pointer-events: none; }
 
 .app-icon-img {
   width: 72px; height: 72px; border-radius: 18px;

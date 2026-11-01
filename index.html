@@ -42,7 +42,7 @@
       <div class="app-icon-img ic-cam">📷</div>
       <span class="app-icon-label">Camera</span>
     </div>
-    <div class="app-icon" id="phone-icon" onclick="openApp('phone','Phone')" style="display:none">
+    <div class="app-icon disabled" id="phone-icon" onclick="if (phoneUnlocked) openApp('phone','Phone')">
       <div class="app-icon-img ic-phone">📞</div>
       <span class="app-icon-label">Phone</span>
     </div>

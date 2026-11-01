@@ -92,7 +92,7 @@ function finishCall() {
   document.getElementById('call-timer').textContent = '';
   setTimeout(() => {
     document.getElementById('active-call').classList.remove('open');
-    openApp('phone', 'Phone');
+    if (phoneUnlocked) openApp('phone', 'Phone');
   }, 1500);
 }
 
@@ -260,7 +260,7 @@ document.getElementById('app').style.display = 'none';
     const match = history.every((v, i) => v === SECRET[i]);
     if (match && !phoneUnlocked) {
       phoneUnlocked = true;
-      document.getElementById('phone-icon').style.display = 'flex';
+      document.getElementById('phone-icon').classList.remove('disabled');
       document.getElementById('unlock-popup').classList.add('open');
     }
   }
