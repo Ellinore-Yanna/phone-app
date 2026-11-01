@@ -318,6 +318,12 @@ const conversations = [
     { from: 'me',   text: "Aye, noon suits me fine." },
     { from: 'them', text: "Grand! I'll save ye a seat and a mug o' grog." },
   ]},
+  { id: 'c5', name: 'Calico Jack', avatar: '🦈', msgs: [
+    { from: 'them', text: "Ahoy!" },
+  ]},
+  { id: 'c6', name: 'Polly Pennywhistle', avatar: '🧭', msgs: [
+    { from: 'them', text: "Hello there, matey." },
+  ]},
 ];
 // A conversation with a secret answers only its exact phrase (ignoring case, punctuation and extra spaces);
 // every other message is ignored.
