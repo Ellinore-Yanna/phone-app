@@ -394,7 +394,6 @@ function initPhotos() { renderGallery(); }
 
 function addPhoto(uri) {
   photos.unshift(uri);
-  document.getElementById('gallery-count').textContent = photos.length;
   renderGallery();
 }
 
@@ -411,11 +410,24 @@ function libraryPicked(e) {
   e.target.value = '';
 }
 
+// Videos that ship with the app; they appear first in the gallery.
+const videos = [
+  { src: 'video.mp4', poster: 'video-cover.svg', label: 'Video' },
+];
+
 function renderGallery() {
   const grid = document.getElementById('gallery-grid');
   const empty = document.getElementById('gallery-empty');
   grid.innerHTML = '';
-  empty.style.display = photos.length ? 'none' : 'block';
+  document.getElementById('gallery-count').textContent = videos.length + photos.length;
+  empty.style.display = videos.length + photos.length ? 'none' : 'block';
+  videos.forEach(v => {
+    const tile = document.createElement('div');
+    tile.className = 'video-tile';
+    tile.onclick = () => openVideo(v.src);
+    tile.innerHTML = '<img src="' + v.poster + '" alt="' + v.label + '"><span class="play-badge">▶</span>';
+    grid.appendChild(tile);
+  });
   photos.forEach((uri, i) => {
     const img = document.createElement('img');
     img.src = uri;
@@ -426,10 +438,26 @@ function renderGallery() {
 }
 
 function openLightbox(uri) {
-  document.getElementById('lightbox-img').src = uri;
+  document.getElementById('lightbox-video').style.display = 'none';
+  const img = document.getElementById('lightbox-img');
+  img.style.display = 'block';
+  img.src = uri;
   document.getElementById('lightbox').classList.add('open');
 }
+function openVideo(src) {
+  document.getElementById('lightbox-img').style.display = 'none';
+  const vid = document.getElementById('lightbox-video');
+  vid.style.display = 'block';
+  vid.poster = 'video-cover.svg';
+  vid.src = src;
+  document.getElementById('lightbox').classList.add('open');
+  vid.play().catch(() => {});
+}
 function closeLightbox() {
+  const vid = document.getElementById('lightbox-video');
+  vid.pause();
+  vid.removeAttribute('src');
+  vid.load();
   document.getElementById('lightbox').classList.remove('open');
 }
 
