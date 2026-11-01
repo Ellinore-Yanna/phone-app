@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>MyPhone</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=3">
 </head>
 <body>
 
@@ -42,6 +42,10 @@
       <div class="app-icon-img ic-photos">🖼️</div>
       <span class="app-icon-label">Photos</span>
     </div>
+    <div class="app-icon" onclick="openApp('messages','Messages')">
+      <div class="app-icon-img ic-messages">💬</div>
+      <span class="app-icon-label">Messages</span>
+    </div>
     <div class="app-icon disabled" id="phone-icon" onclick="if (phoneUnlocked) openApp('phone','Phone')">
       <div class="app-icon-img ic-phone">📞</div>
       <span class="app-icon-label">Phone</span>
@@ -73,6 +77,22 @@
         <div class="result" id="calc-result">0</div>
       </div>
       <div class="calc-grid" id="calc-grid"></div>
+    </section>
+
+    <!-- ══ MESSAGES ══ -->
+    <section id="messages" class="screen">
+      <div id="msg-list"></div>
+      <div id="msg-thread">
+        <div class="thread-bar">
+          <button class="thread-back" onclick="closeThread()">‹ Back</button>
+          <span id="thread-name"></span>
+        </div>
+        <div id="thread-bubbles"></div>
+        <form class="thread-input" onsubmit="sendMessage(event)">
+          <input type="text" id="thread-text" placeholder="Message" autocomplete="off">
+          <button type="submit">Send</button>
+        </form>
+      </div>
     </section>
 
     <!-- ══ PHOTOS ══ -->
@@ -146,6 +166,9 @@
   <nav>
     <button class="tab active" onclick="showTab('calc','Calculator',this)">
       <span class="icon">🧮</span><span class="label">Calc</span>
+    </button>
+    <button class="tab" onclick="showTab('messages','Messages',this)">
+      <span class="icon">💬</span><span class="label">Messages</span>
     </button>
     <button class="tab" onclick="showTab('photos','Photos',this)">
       <span class="icon">🖼️</span><span class="label">Photos</span>
@@ -225,6 +248,6 @@
   <img id="lightbox-img" src="" alt="">
 </div>
 
-<script src="app.js"></script>
+<script src="app.js?v=3"></script>
 </body>
 </html>

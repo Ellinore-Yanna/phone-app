@@ -142,6 +142,7 @@
 
 /* App icon colors */
 .ic-calc  { background: linear-gradient(145deg, #1c1c1e, #3a3a3c); }
+.ic-messages { background: linear-gradient(145deg, #30d158, #25a244); }
 .ic-photos { background: linear-gradient(145deg, #1c1c1e, #3a3a3c); }
 .ic-phone { background: linear-gradient(145deg, #30d158, #25a244); }
 .ic-notes { background: linear-gradient(145deg, #ffd60a, #c8a800); }
@@ -588,4 +589,55 @@ nav {
   padding: 13px 24px; font-size: 16px; font-weight: 600;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* ════════════════════════
+   MESSAGES
+════════════════════════ */
+#msg-list { flex: 1; overflow-y: auto; }
+.msg-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; border-bottom: 1px solid var(--border); cursor: pointer;
+}
+.msg-row:active { background: var(--surface2); }
+.msg-avatar {
+  width: 46px; height: 46px; border-radius: 50%; flex-shrink: 0;
+  background: var(--surface2); font-size: 24px;
+  display: flex; align-items: center; justify-content: center;
+}
+.msg-info { min-width: 0; }
+.msg-name { font-size: 16px; font-weight: 600; }
+.msg-preview {
+  font-size: 14px; color: var(--muted);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+#msg-thread { flex: 1; display: none; flex-direction: column; min-height: 0; }
+#msg-thread.open { display: flex; }
+.thread-bar {
+  display: flex; align-items: center; gap: 12px; flex-shrink: 0;
+  padding: 10px 16px; background: var(--surface);
+  border-bottom: 1px solid var(--border); font-weight: 600;
+}
+.thread-back { border: none; background: none; color: var(--blue); font-size: 16px; cursor: pointer; }
+#thread-bubbles {
+  flex: 1; overflow-y: auto; padding: 12px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.bubble {
+  max-width: 78%; padding: 8px 12px; border-radius: 18px;
+  font-size: 15px; line-height: 1.35; word-wrap: break-word;
+}
+.bubble.me { align-self: flex-end; background: var(--blue); color: #fff; }
+.bubble.them { align-self: flex-start; background: var(--surface2); }
+.thread-input {
+  display: flex; gap: 8px; padding: 8px 12px; flex-shrink: 0;
+  background: var(--surface); border-top: 1px solid var(--border);
+}
+.thread-input input {
+  flex: 1; padding: 10px 14px; border-radius: 20px; border: 1px solid var(--border);
+  background: var(--bg); color: var(--text); font-size: 15px; outline: none;
+}
+.thread-input button {
+  border: none; background: none; color: var(--blue); font-size: 15px; font-weight: 600; cursor: pointer;
 }

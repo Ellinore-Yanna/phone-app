@@ -147,6 +147,7 @@ function openApp(id, title) {
   document.getElementById('page-title').textContent = title;
 
   if (id === 'photos') initPhotos();
+  if (id === 'messages') closeThread();
   if (id === 'clock') startClock();
 }
 
@@ -163,6 +164,7 @@ function showTab(id, title, btn) {
   document.getElementById('page-title').textContent = title;
 
   if (id === 'photos') initPhotos();
+  if (id === 'messages') closeThread();
   if (id === 'clock') startClock();
 }
 
@@ -267,6 +269,96 @@ document.getElementById('app').style.display = 'none';
   }
   };
 })();
+
+/* ══════════════════════════════
+   MESSAGES
+══════════════════════════════ */
+const conversations = [
+  { id: 'c1', name: 'Captain Blackbeard', avatar: '🏴‍☠️', msgs: [
+    { from: 'them', text: "Ahoy, matey! Did ye find the map I buried?" },
+    { from: 'me',   text: "Aye Cap'n, X marks the spot behind the old lighthouse." },
+    { from: 'them', text: "Arr, good lad! Bring a shovel and a barrel o' rum." },
+    { from: 'me',   text: "Shovel packed. Rum... already half drunk." },
+    { from: 'them', text: "Ye'll be walkin' the plank at dawn! 😂" },
+  ]},
+  { id: 'c2', name: 'Anne "Cutlass" Bonny', avatar: '⚔️', msgs: [
+    { from: 'me',   text: "Set sail at noon. Is the crew ready?" },
+    { from: 'them', text: "Aye, the crew be ready and the cannons be loaded." },
+    { from: 'me',   text: "Ye heard anythin' about that Navy sloop off the port bow?" },
+    { from: 'them', text: "Aye. Dinna fret, we'll outrun the scurvy dogs. Hoist the colors!" },
+  ]},
+  { id: 'c3', name: 'Salty Pete Peglegson', avatar: '🦜', msgs: [
+    { from: 'them', text: "Yo ho ho! Polly the parrot learnt a new word." },
+    { from: 'me',   text: "Please tell me it isn't another swear..." },
+    { from: 'them', text: 'Squawk! "Pieces o\' eight!" She said it plain as day.' },
+    { from: 'me',   text: "Shiver me timbers, that's grand! Bringin' her a cracker." },
+    { from: 'them', text: "Ye spoil that bird, ye landlubber." },
+  ]},
+];
+const pirateReplies = [
+  "Arr, that be true!", "Shiver me timbers!", "Aye aye, matey!",
+  "Yo ho ho!", "Blimey, ye don't say!", "Avast! Let's hear more.",
+];
+let openConv = null;
+
+function renderConversations() {
+  const list = document.getElementById('msg-list');
+  list.innerHTML = '';
+  conversations.forEach(c => {
+    const last = c.msgs[c.msgs.length - 1];
+    const row = document.createElement('div');
+    row.className = 'msg-row';
+    row.onclick = () => openThread(c.id);
+    row.innerHTML = '<div class="msg-avatar">' + c.avatar + '</div>' +
+      '<div class="msg-info"><div class="msg-name">' + escHtml(c.name) + '</div>' +
+      '<div class="msg-preview">' + (last.from === 'me' ? 'You: ' : '') + escHtml(last.text) + '</div></div>';
+    list.appendChild(row);
+  });
+}
+
+function renderThread() {
+  const box = document.getElementById('thread-bubbles');
+  const c = conversations.find(x => x.id === openConv);
+  box.innerHTML = '';
+  c.msgs.forEach(m => {
+    const b = document.createElement('div');
+    b.className = 'bubble ' + m.from;
+    b.textContent = m.text;
+    box.appendChild(b);
+  });
+  box.scrollTop = box.scrollHeight;
+}
+
+function openThread(id) {
+  openConv = id;
+  const c = conversations.find(x => x.id === id);
+  document.getElementById('thread-name').textContent = c.avatar + ' ' + c.name;
+  document.getElementById('msg-list').style.display = 'none';
+  document.getElementById('msg-thread').classList.add('open');
+  renderThread();
+}
+
+function closeThread() {
+  openConv = null;
+  document.getElementById('msg-thread').classList.remove('open');
+  document.getElementById('msg-list').style.display = 'block';
+  renderConversations();
+}
+
+function sendMessage(e) {
+  e.preventDefault();
+  const input = document.getElementById('thread-text');
+  const text = input.value.trim();
+  if (!text || !openConv) return;
+  const c = conversations.find(x => x.id === openConv);
+  c.msgs.push({ from: 'me', text });
+  input.value = '';
+  renderThread();
+  setTimeout(() => {
+    c.msgs.push({ from: 'them', text: pirateReplies[Math.floor(Math.random() * pirateReplies.length)] });
+    if (openConv === c.id) renderThread();
+  }, 1200);
+}
 
 /* ══════════════════════════════
    PHOTOS
