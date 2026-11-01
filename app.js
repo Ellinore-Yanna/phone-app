@@ -280,6 +280,7 @@ const conversations = [
     { from: 'them', text: "Arr, good lad! Bring a shovel and a barrel o' rum." },
     { from: 'me',   text: "Shovel packed. Rum... already half drunk." },
     { from: 'them', text: "Ye'll be walkin' the plank at dawn! 😂" },
+    { from: 'them', text: "Listen, matey, there be somethin' we need to talk about. Call me at 8675309. Tonight." },
   ]},
   { id: 'c2', name: 'Anne "Cutlass" Bonny', avatar: '⚔️', msgs: [
     { from: 'me',   text: "Set sail at noon. Is the crew ready?" },
