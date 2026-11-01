@@ -20,9 +20,11 @@ function initAudioContext() {
 
 const callAudio   = new Audio('4700-rick-roll.mp3');
 const puzzleAudio = new Audio('5837-near-puzzle-quote.mp3');
+const gregAudio   = new Audio('greg-call.mp3');
 
 callAudio.addEventListener('ended',   () => finishCall());
 puzzleAudio.addEventListener('ended', () => finishCall());
+gregAudio.addEventListener('ended',   () => finishCall());
 
 function playRingBurst(startTime, duration) {
   if (!ringCtx) return;
@@ -127,6 +129,7 @@ function beginOutgoingCall(name, number, audio) {
 function endCall() {
   callAudio.pause();   callAudio.currentTime = 0;
   puzzleAudio.pause(); puzzleAudio.currentTime = 0;
+  gregAudio.pause();   gregAudio.currentTime = 0;
   finishCall();
 }
 
@@ -305,7 +308,7 @@ const conversations = [
 ];
 // Greg only answers this phrase (case-insensitive); everyone else ignores new messages.
 const SECRET_PHRASE = 'the drowned keep watch';
-const SECRET_REPLY = "The tide turns at midnight. Meet me at the old lighthouse. Come alone.";
+const SECRET_REPLY = "Ye did it. Call me at 883021.";
 let openConv = null;
 
 function renderConversations() {
@@ -437,17 +440,25 @@ function closeLightbox() {
   });
 })();
 
+// Numbers that place a call when fully dialed; every other number does nothing.
+const SECRET_CALLS = {
+  '8675309': { name: '867-5309', audio: () => puzzleAudio },
+  '883021':  { name: 'Greg "Barnacle" Bones', audio: () => gregAudio },
+};
+
 function dialPress(k) {
   const el = document.getElementById('dial-number');
   if (el.textContent.length >= 15) return;
   el.textContent += k;
   document.getElementById('dial-del').style.visibility = 'visible';
 
-  if (el.textContent === '8675309') {
+  const call = SECRET_CALLS[el.textContent];
+  if (call) {
+    const number = el.textContent;
     setTimeout(() => {
       el.textContent = '';
       document.getElementById('dial-del').style.visibility = 'hidden';
-      beginOutgoingCall('867-5309', '8675309', puzzleAudio);
+      beginOutgoingCall(call.name, number, call.audio());
     }, 400);
   }
 }
@@ -503,7 +514,7 @@ function fmtDuration(s) {
   return m > 0 ? `${m}m ${s % 60}s` : `${s}s`;
 }
 
-// Only the secret number (8675309) places a call, and it is handled in dialPress.
+// Only the numbers in SECRET_CALLS place a call, and they are handled in dialPress.
 // The call button never dials a real number.
 function makeCall() {}
 
