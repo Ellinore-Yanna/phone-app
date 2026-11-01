@@ -289,7 +289,7 @@ const conversations = [
     { from: 'them', text: "Ye'll be walkin' the plank at dawn! 😂" },
     { from: 'them', text: "Listen, matey, there be somethin' we need to talk about. Call me at 8675309. Tonight." },
   ]},
-  { id: 'c2', name: 'Anne "Cutlass" Bonny', avatar: '⚔️', msgs: [
+  { id: 'c2', name: 'Anne "Cutlass" Bonny', avatar: '⚔️', secret: { phrase: 'the silver key sleeps beneath the broken bell', reply: "Ye cracked it! The pin is 496." }, msgs: [
     { from: 'them', text: "Sorry I missed yer call, matey! Dial me at 493293 and we'll talk proper." },
     { from: 'me',   text: "Set sail at noon. Is the crew ready?" },
     { from: 'them', text: "Aye, the crew be ready and the cannons be loaded." },
@@ -311,7 +311,7 @@ const conversations = [
     { from: 'me',   text: "Shiver me timbers, that's grand! Bringin' her a cracker." },
     { from: 'them', text: "Ye spoil that bird, ye landlubber." },
   ]},
-  { id: 'c4', name: 'Greg "Barnacle" Bones', avatar: '⚓', secret: true, msgs: [
+  { id: 'c4', name: 'Greg "Barnacle" Bones', avatar: '⚓', secret: { phrase: 'the drowned keep watch', reply: "Ye did it. Call me at 883021." }, msgs: [
     { from: 'them', text: "Ahoy! Ye be around this weekend?" },
     { from: 'me',   text: "Aye, what be the plan?" },
     { from: 'them', text: "Fancy a feast at the tavern Saturday?" },
@@ -319,9 +319,9 @@ const conversations = [
     { from: 'them', text: "Grand! I'll save ye a seat and a mug o' grog." },
   ]},
 ];
-// Greg only answers this phrase (case-insensitive); everyone else ignores new messages.
-const SECRET_PHRASE = 'the drowned keep watch';
-const SECRET_REPLY = "Ye did it. Call me at 883021.";
+// A conversation with a secret answers only its exact phrase (ignoring case, punctuation and extra spaces);
+// every other message is ignored.
+const normalize = t => t.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
 let openConv = null;
 
 function renderConversations() {
@@ -377,9 +377,9 @@ function sendMessage(e) {
   c.msgs.push({ from: 'me', text });
   input.value = '';
   renderThread();
-  if (c.secret && text.toLowerCase().replace(/\s+/g, ' ') === SECRET_PHRASE) {
+  if (c.secret && normalize(text) === c.secret.phrase) {
     setTimeout(() => {
-      c.msgs.push({ from: 'them', text: SECRET_REPLY });
+      c.msgs.push({ from: 'them', text: c.secret.reply });
       if (openConv === c.id) renderThread();
     }, 1200);
   }
