@@ -294,7 +294,7 @@ const conversations = [
     { from: 'me',   text: "Shiver me timbers, that's grand! Bringin' her a cracker." },
     { from: 'them', text: "Ye spoil that bird, ye landlubber." },
   ]},
-  { id: 'c4', name: 'Greg', avatar: '🙂', secret: true, msgs: [
+  { id: 'c4', name: 'Greg "Barnacle" Bones', avatar: '⚓', secret: true, msgs: [
     { from: 'them', text: "Hey, you around this weekend?" },
     { from: 'me',   text: "Yeah, what's up?" },
     { from: 'them', text: "Want to grab lunch Saturday?" },
