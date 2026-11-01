@@ -294,11 +294,17 @@ const conversations = [
     { from: 'me',   text: "Shiver me timbers, that's grand! Bringin' her a cracker." },
     { from: 'them', text: "Ye spoil that bird, ye landlubber." },
   ]},
+  { id: 'c4', name: 'Greg', avatar: '🙂', secret: true, msgs: [
+    { from: 'them', text: "Hey, you around this weekend?" },
+    { from: 'me',   text: "Yeah, what's up?" },
+    { from: 'them', text: "Want to grab lunch Saturday?" },
+    { from: 'me',   text: "Sure, noon works." },
+    { from: 'them', text: "Great, see you then." },
+  ]},
 ];
-const pirateReplies = [
-  "Arr, that be true!", "Shiver me timbers!", "Aye aye, matey!",
-  "Yo ho ho!", "Blimey, ye don't say!", "Avast! Let's hear more.",
-];
+// Greg only answers this phrase (case-insensitive); everyone else ignores new messages.
+const SECRET_PHRASE = 'the drowned keep watch';
+const SECRET_REPLY = "The tide turns at midnight. Meet me at the old lighthouse. Come alone.";
 let openConv = null;
 
 function renderConversations() {
@@ -354,10 +360,12 @@ function sendMessage(e) {
   c.msgs.push({ from: 'me', text });
   input.value = '';
   renderThread();
-  setTimeout(() => {
-    c.msgs.push({ from: 'them', text: pirateReplies[Math.floor(Math.random() * pirateReplies.length)] });
-    if (openConv === c.id) renderThread();
-  }, 1200);
+  if (c.secret && text.toLowerCase().replace(/\s+/g, ' ') === SECRET_PHRASE) {
+    setTimeout(() => {
+      c.msgs.push({ from: 'them', text: SECRET_REPLY });
+      if (openConv === c.id) renderThread();
+    }, 1200);
+  }
 }
 
 /* ══════════════════════════════
