@@ -321,7 +321,7 @@ const conversations = [
   { id: 'c5', name: 'Calico Jack', avatar: '🦈', secret: { phrase: '3423', reply: "Aye, that be the code. The pin is 392." }, msgs: [
     { from: 'them', text: "Ahoy!" },
   ]},
-  { id: 'c6', name: 'Polly Pennywhistle', avatar: '🧭', msgs: [
+  { id: 'c6', name: 'Polly Pennywhistle', avatar: '🧭', secret: { phrase: '52709340', reply: "That be the one! The pin is 361." }, msgs: [
     { from: 'them', text: "Hello there, matey." },
   ]},
 ];
