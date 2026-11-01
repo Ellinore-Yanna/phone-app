@@ -21,10 +21,12 @@ function initAudioContext() {
 const callAudio   = new Audio('4700-rick-roll.mp3');
 const puzzleAudio = new Audio('5837-near-puzzle-quote.mp3');
 const gregAudio   = new Audio('greg-call.mp3');
+const anneAudio   = new Audio('anne-call.mp3');
 
 callAudio.addEventListener('ended',   () => finishCall());
 puzzleAudio.addEventListener('ended', () => finishCall());
 gregAudio.addEventListener('ended',   () => finishCall());
+anneAudio.addEventListener('ended',   () => finishCall());
 
 function playRingBurst(startTime, duration) {
   if (!ringCtx) return;
@@ -131,6 +133,7 @@ function endCall() {
   callAudio.pause();   callAudio.currentTime = 0;
   puzzleAudio.pause(); puzzleAudio.currentTime = 0;
   gregAudio.pause();   gregAudio.currentTime = 0;
+  anneAudio.pause();   anneAudio.currentTime = 0;
   finishCall();
 }
 
@@ -287,10 +290,19 @@ const conversations = [
     { from: 'them', text: "Listen, matey, there be somethin' we need to talk about. Call me at 8675309. Tonight." },
   ]},
   { id: 'c2', name: 'Anne "Cutlass" Bonny', avatar: '⚔️', msgs: [
+    { from: 'them', text: "Sorry I missed yer call, matey! Dial me at 493293 and we'll talk proper." },
     { from: 'me',   text: "Set sail at noon. Is the crew ready?" },
     { from: 'them', text: "Aye, the crew be ready and the cannons be loaded." },
     { from: 'me',   text: "Ye heard anythin' about that Navy sloop off the port bow?" },
     { from: 'them', text: "Aye. Dinna fret, we'll outrun the scurvy dogs. Hoist the colors!" },
+    { from: 'me',   text: "And the powder? Last time half of it got soaked." },
+    { from: 'them', text: "Dry as bone, stowed below deck in oilskin barrels." },
+    { from: 'me',   text: "Good. Who's takin' the first watch tonight?" },
+    { from: 'them', text: "Old One-Eyed Jim. He swears he sees the whole sea with the one eye." },
+    { from: 'me',   text: "Aye, and he's usually right. Annoyin', that." },
+    { from: 'them', text: "Ha! Get some rest. We'll need clear heads come mornin'." },
+    { from: 'me',   text: "Fair winds to ye, Anne." },
+    { from: 'them', text: "And to ye, matey. Fair winds." },
   ]},
   { id: 'c3', name: 'Salty Pete Peglegson', avatar: '🦜', msgs: [
     { from: 'them', text: "Yo ho ho! Polly the parrot learnt a new word." },
@@ -445,6 +457,7 @@ function closeLightbox() {
 const SECRET_CALLS = {
   '8675309': { name: '867-5309', audio: () => puzzleAudio },
   '883021':  { name: 'Greg "Barnacle" Bones', audio: () => gregAudio },
+  '493293':  { name: 'Anne "Cutlass" Bonny', audio: () => anneAudio },
 };
 
 function dialPress(k) {
