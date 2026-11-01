@@ -295,11 +295,11 @@ const conversations = [
     { from: 'them', text: "Ye spoil that bird, ye landlubber." },
   ]},
   { id: 'c4', name: 'Greg "Barnacle" Bones', avatar: '⚓', secret: true, msgs: [
-    { from: 'them', text: "Hey, you around this weekend?" },
-    { from: 'me',   text: "Yeah, what's up?" },
-    { from: 'them', text: "Want to grab lunch Saturday?" },
-    { from: 'me',   text: "Sure, noon works." },
-    { from: 'them', text: "Great, see you then." },
+    { from: 'them', text: "Ahoy! Ye be around this weekend?" },
+    { from: 'me',   text: "Aye, what be the plan?" },
+    { from: 'them', text: "Fancy a feast at the tavern Saturday?" },
+    { from: 'me',   text: "Aye, noon suits me fine." },
+    { from: 'them', text: "Grand! I'll save ye a seat and a mug o' grog." },
   ]},
 ];
 // Greg only answers this phrase (case-insensitive); everyone else ignores new messages.
