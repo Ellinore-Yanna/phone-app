@@ -90,6 +90,7 @@ function finishCall() {
   const duration = callStartTime ? Math.floor((Date.now() - callStartTime) / 1000) : 0;
   stopCallTimer();
   addCallRecord(activeCallType, activeCallName, activeCallNumber, duration);
+  callStartTime = null; // so a call ended before connecting does not reuse the last call's start time
   document.getElementById('call-status-label').textContent = 'Call Ended';
   document.getElementById('call-timer').textContent = '';
   setTimeout(() => {
