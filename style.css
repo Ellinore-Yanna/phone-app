@@ -627,7 +627,7 @@ nav {
 }
 .bubble {
   max-width: 78%; padding: 8px 12px; border-radius: 18px;
-  font-size: 15px; line-height: 1.35; word-wrap: break-word;
+  font-size: 15px; line-height: 1.35; word-wrap: break-word; white-space: pre-wrap;
 }
 .bubble.me { align-self: flex-end; background: var(--blue); color: #fff; }
 .bubble.them { align-self: flex-start; background: var(--surface2); }

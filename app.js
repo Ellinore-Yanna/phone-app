@@ -306,12 +306,32 @@ const conversations = [
     { from: 'me',   text: "Fair winds to ye, Anne." },
     { from: 'them', text: "And to ye, matey. Fair winds." },
   ]},
-  { id: 'c3', name: 'Salty Pete Peglegson', avatar: '🦜', msgs: [
-    { from: 'them', text: "Yo ho ho! Polly the parrot learnt a new word." },
-    { from: 'me',   text: "Please tell me it isn't another swear..." },
-    { from: 'them', text: 'Squawk! "Pieces o\' eight!" She said it plain as day.' },
-    { from: 'me',   text: "Shiver me timbers, that's grand! Bringin' her a cracker." },
-    { from: 'them', text: "Ye spoil that bird, ye landlubber." },
+  { id: 'c3', name: 'Salty Pete Peglegson', avatar: '🦜', whodunit: {
+      suspects: [
+        { name: 'Salty Sal',        aliases: ['salty sal', 'salty', 'sal'] },
+        { name: 'Captain Redbeard', aliases: ['captain redbeard', 'redbeard'] },
+        { name: 'Mad Molly',        aliases: ['mad molly', 'molly'] },
+        { name: 'One-Eyed Jack',    aliases: ['one-eyed jack', 'one eyed jack', 'jack'] },
+        { name: 'Barnacle Bill',    aliases: ['barnacle bill', 'barnacle', 'bill'] },
+      ],
+      thief: 'Barnacle Bill',
+      reply: "Aye, that be the thief! The pin is 361.",
+      wrongReplies: [
+        "Nay, that scallywag be innocent. Think again, matey.",
+        "Arr, ye be barkin' up the wrong mast!",
+        "Shiver me timbers, ye be way off course!",
+        "Wrong again, landlubber. Keep lookin'.",
+        "I'd wager me peg leg it weren't them.",
+        "Not them, matey. Rule out the others and try again.",
+      ],
+    }, msgs: [
+    { from: 'them', text: "Arr, matey, terrible news! Somebody's pinched the captain's gold from the hold." },
+    { from: 'me',   text: "The whole chest? Who'd dare cross the captain?" },
+    { from: 'them', text: "Every last doubloon, gone by mornin'. We must find out who did it before we make port." },
+    { from: 'me',   text: "Any suspects?" },
+    { from: 'them', text: "Five scallywags had the run o' the ship last night:\n• Salty Sal\n• Captain Redbeard\n• Mad Molly\n• One-Eyed Jack\n• Barnacle Bill" },
+    { from: 'me',   text: "That's a shifty lot. How do I narrow it down?" },
+    { from: 'them', text: "Rule 'em out one by one. When ye know who the thief be, text me their name." },
   ]},
   { id: 'c4', name: 'Greg "Barnacle" Bones', avatar: '⚓', secret: { phrase: 'the drowned keep watch', reply: "Ye did it. Call me at 883021." }, msgs: [
     { from: 'them', text: "Ahoy! Ye be around this weekend?" },
@@ -328,7 +348,7 @@ const conversations = [
   ]},
 ];
 // A conversation with a secret answers only its exact phrase (ignoring case, punctuation and extra spaces);
-// every other message is ignored.
+// every other message is ignored. A conversation with a whodunit answers every message (see whodunitReply).
 const normalize = t => t.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
 let openConv = null;
 
@@ -376,6 +396,15 @@ function closeThread() {
   renderConversations();
 }
 
+// The player texts a suspect's name. Only naming the real thief (and nobody else) earns the reply;
+// any other guess gets a random brush-off.
+function whodunitReply(w, text) {
+  const padded = ' ' + normalize(text) + ' ';
+  const named = w.suspects.filter(s => s.aliases.some(a => padded.includes(' ' + normalize(a) + ' ')));
+  if (named.length === 1 && named[0].name === w.thief) return w.reply;
+  return w.wrongReplies[Math.floor(Math.random() * w.wrongReplies.length)];
+}
+
 function sendMessage(e) {
   e.preventDefault();
   const input = document.getElementById('thread-text');
@@ -385,9 +414,12 @@ function sendMessage(e) {
   c.msgs.push({ from: 'me', text });
   input.value = '';
   renderThread();
-  if (c.secret && normalize(text) === c.secret.phrase) {
+  let reply = null;
+  if (c.secret && normalize(text) === c.secret.phrase) reply = c.secret.reply;
+  else if (c.whodunit) reply = whodunitReply(c.whodunit, text);
+  if (reply) {
     setTimeout(() => {
-      c.msgs.push({ from: 'them', text: c.secret.reply });
+      c.msgs.push({ from: 'them', text: reply });
       if (openConv === c.id) renderThread();
     }, 1200);
   }
