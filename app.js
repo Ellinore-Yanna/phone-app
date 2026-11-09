@@ -297,8 +297,6 @@ const conversations = [
     { from: 'them', text: "Aye, the crew be ready and the cannons be loaded." },
     { from: 'me',   text: "Ye heard anythin' about that Navy sloop off the port bow?" },
     { from: 'them', text: "Aye. Dinna fret, we'll outrun the scurvy dogs. Hoist the colors!" },
-    { from: 'me',   text: "And the powder? Last time half of it got soaked." },
-    { from: 'them', text: "Dry as bone, stowed below deck in oilskin barrels." },
     { from: 'me',   text: "Good. Who's takin' the first watch tonight?" },
     { from: 'them', text: "Old One-Eyed Jim. He swears he sees the whole sea with the one eye." },
     { from: 'me',   text: "Aye, and he's usually right. Annoyin', that." },
