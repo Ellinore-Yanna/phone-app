@@ -2,7 +2,7 @@ let phoneUnlocked = false;
 
 function dismissUnlock() {
   document.getElementById('unlock-popup').classList.remove('open');
-  initAudioContext(); // must happen during a user tap to unlock the browser audio policy
+  unlockAudio(); // must happen during a user tap to unlock the browser audio policy
   goHome();
   setTimeout(triggerIncomingCall, 10000);
 }
@@ -10,58 +10,40 @@ function dismissUnlock() {
 /* ══════════════════════════════
    INCOMING CALL + RINGTONE
 ══════════════════════════════ */
-let ringCtx = null, ringTimer = null;
 let callTimerInterval = null, callStartTime = null;
 let activeCallType = 'incoming', activeCallName = 'Unknown', activeCallNumber = 'Unknown';
-
-function initAudioContext() {
-  if (!ringCtx) ringCtx = new (window.AudioContext || window.webkitAudioContext)();
-}
 
 const callAudio   = new Audio('4700-rick-roll.mp3');
 const puzzleAudio = new Audio('5837-near-puzzle-quote.mp3');
 const gregAudio   = new Audio('greg-call.mp3');
 const anneAudio   = new Audio('anne-call.mp3');
+const ringAudio   = new Audio('ringtone.wav');
+ringAudio.loop = true;
+
+// Browsers (iOS Safari especially) only let an audio element play later, from a timer, if it was
+// started once during a tap. Play each one muted for an instant so the incoming-call ring is audible.
+function unlockAudio() {
+  [ringAudio, callAudio, puzzleAudio, gregAudio, anneAudio].forEach(a => {
+    a.muted = true;
+    a.play().then(() => {
+      a.pause(); a.currentTime = 0; a.muted = false;
+    }).catch(() => { a.muted = false; });
+  });
+}
 
 callAudio.addEventListener('ended',   () => finishCall());
 puzzleAudio.addEventListener('ended', () => finishCall());
 gregAudio.addEventListener('ended',   () => finishCall());
 anneAudio.addEventListener('ended',   () => finishCall());
 
-function playRingBurst(startTime, duration) {
-  if (!ringCtx) return;
-  [900, 1400].forEach(freq => {
-    const osc = ringCtx.createOscillator();
-    const gain = ringCtx.createGain();
-    const lfo = ringCtx.createOscillator();
-    const lfoGain = ringCtx.createGain();
-    osc.type = 'square'; osc.frequency.value = freq;
-    lfo.type = 'sine';   lfo.frequency.value = 25;
-    lfoGain.gain.value = 0.12;
-    lfo.connect(lfoGain); lfoGain.connect(gain.gain);
-    gain.gain.setValueAtTime(0.18, startTime);
-    gain.gain.linearRampToValueAtTime(0, startTime + duration);
-    osc.connect(gain); gain.connect(ringCtx.destination);
-    osc.start(startTime); osc.stop(startTime + duration);
-    lfo.start(startTime); lfo.stop(startTime + duration);
-  });
-}
-
-function singleRing() {
-  if (!ringCtx) return;
-  const now = ringCtx.currentTime;
-  playRingBurst(now, 0.45);
-  playRingBurst(now + 0.7, 0.45);
-}
-
 function startRing() {
-  if (ringCtx && ringCtx.state === 'suspended') ringCtx.resume();
-  singleRing();
-  ringTimer = setInterval(singleRing, 3500);
+  ringAudio.currentTime = 0;
+  ringAudio.play().catch(() => {});
 }
 
 function stopRing() {
-  clearInterval(ringTimer); ringTimer = null;
+  ringAudio.pause();
+  ringAudio.currentTime = 0;
 }
 
 function triggerIncomingCall() {
@@ -226,8 +208,9 @@ document.getElementById('app').style.display = 'none';
   const res = document.getElementById('calc-result');
   const expr = document.getElementById('calc-expr');
 
-  // Secret sequence: 3 × 2 ÷ 2 + 6 + 5 + 10 − 3 − 8 − 9
-  const SECRET = ['3','×','2','÷','2','+','6','+','5','+','1','0','−','3','−','8','−','9'];
+  // Secret sequence: 3 × 2 ÷ 2, then + 6, + 5, + 10, − 3, − 8, − 9 in any order.
+  const SECRET_START = ['3','×','2','÷','2'];
+  const SECRET_STEPS = ['+6','+5','+10','−3','−8','−9'].sort().join(',');
   let history = [];
 
   function update() { res.textContent = display; }
@@ -264,10 +247,29 @@ document.getElementById('app').style.display = 'none';
     }
     update();
 
+  // Joins digit presses into numbers: ['1','0','+','5'] -> ['10','+','5']
+  function tokenize(keys) {
+    const tokens = [];
+    let num = '';
+    keys.forEach(k => {
+      if (k in opMap) { tokens.push(num, k); num = ''; }
+      else num += k;
+    });
+    tokens.push(num);
+    return tokens;
+  }
+
+  function matchesSecret() {
+    const t = tokenize(history);
+    if (t.length !== SECRET_START.length + 12) return false;
+    if (!SECRET_START.every((v, i) => v === t[i])) return false;
+    const steps = [];
+    for (let i = SECRET_START.length; i < t.length; i += 2) steps.push(t[i] + t[i + 1]);
+    return steps.sort().join(',') === SECRET_STEPS;
+  }
+
   function checkSecret() {
-    if (history.length !== SECRET.length) return;
-    const match = history.every((v, i) => v === SECRET[i]);
-    if (match && !phoneUnlocked) {
+    if (matchesSecret() && !phoneUnlocked) {
       phoneUnlocked = true;
       document.getElementById('phone-icon').classList.remove('disabled');
       document.getElementById('nav-phone').classList.remove('disabled');
