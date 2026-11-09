@@ -291,7 +291,7 @@ const conversations = [
     { from: 'them', text: "Ye'll be walkin' the plank at dawn! 😂" },
     { from: 'them', text: "Listen, matey, there be somethin' we need to talk about. Call me at 8675309. Tonight." },
   ]},
-  { id: 'c2', name: 'Anne "Cutlass" Bonny', avatar: '⚔️', secret: { phrase: 'the silver key sleeps beneath the broken bell', reply: "Ye cracked it! The pin is 496. Now give the map code to Polly." }, msgs: [
+  { id: 'c2', name: 'Anne "Cutlass" Bonny', avatar: '⚔️', secret: { phrase: 'the silver key sleeps beneath the broken bell', reply: "Ye cracked it! Now give the map code to Polly." }, msgs: [
     { from: 'them', text: "Sorry I missed yer call, matey! Dial me at 493293 and we'll talk proper." },
     { from: 'me',   text: "Set sail at noon. Is the crew ready?" },
     { from: 'them', text: "Aye, the crew be ready and the cannons be loaded." },
@@ -343,7 +343,7 @@ const conversations = [
   { id: 'c5', name: 'Calico Jack', avatar: '🦈', secret: { phrase: '3423', reply: "Aye, that be the code. The pin is 392." }, msgs: [
     { from: 'them', text: "Ahoy!" },
   ]},
-  { id: 'c6', name: 'Polly Pennywhistle', avatar: '🧭', secret: { phrase: '52709340', requires: 'c2', reply: "That be the one! The pin is 361." }, msgs: [
+  { id: 'c6', name: 'Polly Pennywhistle', avatar: '🧭', secret: { phrase: '52709340', requires: 'c2', reply: "That be the one! The pin is 743." }, msgs: [
     { from: 'them', text: "Hello there, matey." },
   ]},
 ];
