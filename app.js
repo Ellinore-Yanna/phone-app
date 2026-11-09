@@ -315,7 +315,7 @@ const conversations = [
         { name: 'Barnacle Bill',    aliases: ['barnacle bill', 'barnacle', 'bill'] },
       ],
       thief: 'Barnacle Bill',
-      reply: "Aye, that be the thief! The pin is 361.",
+      reply: "Aye, that be the thief! The pin is 309.",
       wrongReplies: [
         "Nay, that scallywag be innocent. Think again, matey.",
         "Arr, ye be barkin' up the wrong mast!",
