@@ -343,7 +343,7 @@ const conversations = [
   { id: 'c5', name: 'Calico Jack', avatar: '🦈', secret: { phrase: '3423', reply: "Aye, that be the code. The pin is 496." }, msgs: [
     { from: 'them', text: "Ahoy!" },
   ]},
-  { id: 'c6', name: 'Polly Pennywhistle', avatar: '🧭', secret: { phrase: '52709340', requires: 'c2', reply: "That be the one! The pin is 743." }, msgs: [
+  { id: 'c6', name: 'Polly Pennywhistle', avatar: '🧭', secret: { phrase: '52709340', requires: 'c2', lockedReply: "Hold yer horses, matey! Ye need to give the code to Anne first.", reply: "That be the one! The pin is 743." }, msgs: [
     { from: 'them', text: "Hello there, matey." },
   ]},
 ];
@@ -405,7 +405,8 @@ function whodunitReply(w, text) {
   return w.wrongReplies[Math.floor(Math.random() * w.wrongReplies.length)];
 }
 
-// A secret with `requires` stays silent until the named conversation's secret has been solved.
+// A secret with `requires` stays locked until the named conversation's secret has been solved.
+// While locked, the conversation answers every message with its `lockedReply` (if it has one).
 function secretUnlocked(secret) {
   if (!secret.requires) return true;
   return !!conversations.find(x => x.id === secret.requires).solved;
@@ -424,6 +425,8 @@ function sendMessage(e) {
   if (c.secret && normalize(text) === c.secret.phrase && secretUnlocked(c.secret)) {
     reply = c.secret.reply;
     c.solved = true;
+  } else if (c.secret && c.secret.lockedReply && !secretUnlocked(c.secret)) {
+    reply = c.secret.lockedReply;
   } else if (c.whodunit) reply = whodunitReply(c.whodunit, text);
   if (reply) {
     setTimeout(() => {
