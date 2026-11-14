@@ -340,7 +340,7 @@ const conversations = [
     { from: 'me',   text: "Aye, noon suits me fine." },
     { from: 'them', text: "Grand! I'll save ye a seat and a mug o' grog." },
   ]},
-  { id: 'c5', name: 'Calico Jack', avatar: '🦈', secret: { phrase: '3423', reply: "Aye, that be the code. The pin is 392." }, msgs: [
+  { id: 'c5', name: 'Calico Jack', avatar: '🦈', secret: { phrase: '3423', reply: "Aye, that be the code. The pin is 496." }, msgs: [
     { from: 'them', text: "Ahoy!" },
   ]},
   { id: 'c6', name: 'Polly Pennywhistle', avatar: '🧭', secret: { phrase: '52709340', requires: 'c2', reply: "That be the one! The pin is 743." }, msgs: [
