@@ -273,6 +273,8 @@ document.getElementById('app').style.display = 'none';
       phoneUnlocked = true;
       document.getElementById('phone-icon').classList.remove('disabled');
       document.getElementById('nav-phone').classList.remove('disabled');
+      document.getElementById('messages-icon').classList.remove('disabled');
+      document.getElementById('nav-messages').classList.remove('disabled');
       document.getElementById('unlock-popup').classList.add('open');
     }
   }
