@@ -333,7 +333,7 @@ const conversations = [
     { from: 'me',   text: "That's a shifty lot. How do I narrow it down?" },
     { from: 'them', text: "Rule 'em out one by one. When ye know who the thief be, text me their name." },
   ]},
-  { id: 'c4', name: 'Greg "Barnacle" Bones', avatar: '⚓', secret: { phrase: 'the drowned keep watch', reply: "Ye did it. Call me at 883021." }, msgs: [
+  { id: 'c4', name: 'Greg "Barnacle" Bones', avatar: '⚓', secret: { phrase: 'the drowned keep watch', reply: "Ye did it. Call me at 883021. The pin is 309." }, msgs: [
     { from: 'them', text: "Ahoy! Ye be around this weekend?" },
     { from: 'me',   text: "Aye, what be the plan?" },
     { from: 'them', text: "Fancy a feast at the tavern Saturday?" },
